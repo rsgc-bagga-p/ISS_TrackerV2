@@ -32,14 +32,18 @@ extension UIView {
 
 class ViewController : UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     
+    let latitudeValue = UILabel()
+    let longitudeValue = UILabel()
+    
     //longitude and latitude values are stored here
     var latitude : Double = 0.0
+    var lat : String = ""
+    var long : String = ""
     var longitude : Double = 0.0
     var map : MKMapView!
-    // Views that need to be accessible to all methods
-    let jsonResult = UILabel()
-    let latitudeResult = UILabel()
-    let longitudeResult = UILabel()
+//    // Views that need to be accessible to all methods
+//    let latitudeResult = UILabel()
+//    let longitudeResult = UILabel()
     // If data is successfully retrieved from the server, we can parse it here
     func parseMyJSON(theData : NSData) {
         
@@ -85,7 +89,7 @@ class ViewController : UIViewController, MKMapViewDelegate, CLLocationManagerDel
             // Position the map
             let issCoordinates = CLLocationCoordinate2D(latitude: issLatitude, longitude: issLongitude + 0.001)
             self.map.setCenterCoordinate(issCoordinates, animated: true)
-            let region = MKCoordinateRegion(center: issCoordinates, span: MKCoordinateSpan(latitudeDelta: 2.000, longitudeDelta: 2.000))
+            let region = MKCoordinateRegion(center: issCoordinates, span: MKCoordinateSpan(latitudeDelta: 10.000, longitudeDelta: 10.000))
             //change both to 0.002
             self.map.setRegion(region, animated: true)
             
@@ -239,6 +243,104 @@ class ViewController : UIViewController, MKMapViewDelegate, CLLocationManagerDel
         view.addSubview(title)
         
         /*
+         * Create label that will be the latitude value
+         */
+        let latitudeDisplay = UILabel()
+        
+        // Set the label text and appearance
+        latitudeDisplay.text = "=======LATITUDE======="
+        latitudeDisplay.font = UIFont.boldSystemFontOfSize(28)
+        
+        // Required to autolayout this label
+        latitudeDisplay.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the label to the superview
+        view.addSubview(latitudeDisplay)
+        
+
+        
+//        // Set the label text and appearance
+//        latitudeValue.text = String(latitude)
+//        latitudeValue.font = UIFont.boldSystemFontOfSize(24)
+//        
+//        // Required to autolayout this label
+//        latitudeValue.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        // Add the label to the superview
+//        view.addSubview(latitudeValue)
+        
+        /*
+         * Create label that will be the latitude value
+         */
+        
+        /*
+         * Further define label that will show JSON data
+         */
+        
+        // Set the label text and appearance
+        latitudeValue.text = String(latitude)
+        latitudeValue.font = UIFont.systemFontOfSize(24)
+        latitudeValue.numberOfLines = 0   // makes number of lines dynamic
+        // e.g.: multiple lines will show up
+        latitudeValue.textAlignment = NSTextAlignment.Left
+        
+        // Required to autolayout this label
+        latitudeValue.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the label to the superview
+        view.addSubview(latitudeValue)
+        
+        /*
+         * Create label that will be the longitude value
+         */
+        let longitudeDisplay = UILabel()
+        
+        // Set the label text and appearance
+        longitudeDisplay.text = "=======LONGITUDE======="
+        longitudeDisplay.font = UIFont.boldSystemFontOfSize(28)
+        
+        // Required to autolayout this label
+        longitudeDisplay.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the label to the superview
+        view.addSubview(longitudeDisplay)
+        
+        
+        /*
+         * Create label that will be the longitude value
+         */
+
+        
+//        // Set the label text and appearance
+//        longitudeValue.text = String(longitude)
+//        longitudeValue.font = UIFont.boldSystemFontOfSize(24)
+//        
+//        // Required to autolayout this label
+//        longitudeValue.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        // Add the label to the superview
+//        view.addSubview(longitudeValue)
+//        
+        
+        /*
+         * Further define label that will show JSON data
+         */
+        
+        // Set the label text and appearance
+        longitudeValue.text = String(longitude)
+        longitudeValue.font = UIFont.systemFontOfSize(24)
+        longitudeValue.numberOfLines = 0   // makes number of lines dynamic
+        // e.g.: multiple lines will show up
+        longitudeValue.textAlignment = NSTextAlignment.Left
+        
+        // Required to autolayout this label
+        longitudeValue.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add the label to the superview
+        view.addSubview(longitudeValue)
+        
+        
+        /*
          * Further define map
          */
         let mapContainer : UIView = UIView(frame: CGRectMake(0, 0, 640, 350))
@@ -285,11 +387,15 @@ class ViewController : UIViewController, MKMapViewDelegate, CLLocationManagerDel
         let viewsDictionary : [String : AnyObject] = [
             "title": title,
             "getData": getData,
-            "map": mapContainer]
+            "map": mapContainer,
+            "latitude": latitudeValue,
+            "longitude": longitudeValue,
+            "latitudeTitle": latitudeDisplay,
+            "longitudeTitle": longitudeDisplay]
         
         // Define the vertical constraints
         let verticalConstraints = NSLayoutConstraint.constraintsWithVisualFormat(
-            "V:|-20-[title]-50-[getData]-50-[map]",
+            "V:|-20-[title]-20-[getData]-30-[latitudeTitle]-5-[latitude]-10-[longitudeTitle]-5-[longitude]-30-[map]",
             options: [],
             metrics: nil,
             views: viewsDictionary)
@@ -301,6 +407,10 @@ class ViewController : UIViewController, MKMapViewDelegate, CLLocationManagerDel
         title.centerHorizontallyInSuperview()
         getData.centerHorizontallyInSuperview()
         map.centerHorizontallyInSuperview()
+        latitudeDisplay.centerHorizontallyInSuperview()
+        latitudeValue.centerHorizontallyInSuperview()
+        longitudeDisplay.centerHorizontallyInSuperview()
+        longitudeValue.centerHorizontallyInSuperview()
         
         // Activate all defined constraints
         NSLayoutConstraint.activateConstraints(allConstraints)
