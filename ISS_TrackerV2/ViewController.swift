@@ -103,8 +103,9 @@ class ViewController : UIViewController, MKMapViewDelegate, CLLocationManagerDel
             // (must be done asynchronously)
             dispatch_async(dispatch_get_main_queue()) {
                 
+                self.latitudeValue.text = String(issLatitude);
                 //self.jsonResult.text = "parsed JSON should go here"
-                
+                self.longitudeValue.text = String(issLongitude);
                 // Create a space in memory to store the current location
                 //var currentLocation = CLLocation()
                 
